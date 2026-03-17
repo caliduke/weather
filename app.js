@@ -1,82 +1,58 @@
-const API_KEY = '3fc61c1941973837cddf41c1468fd438';
-const searchBtn = document.getElementById('searchBtn');
-const locationBtn = document.getElementById('locationBtn');
-const cityInput = document.getElementById('cityInput');
-const display = document.getElementById('weatherDisplay');
-
-// Load last city on startup
-window.addEventListener('load', () => {
-    const lastCity = localStorage.getItem('lastWeatherCity');
-    if (lastCity) fetchWeather(lastCity);
-});
-
-searchBtn.addEventListener('click', () => {
-    if (cityInput.value) fetchWeather(cityInput.value);
-});
-
-locationBtn.addEventListener('click', () => {
-    if (navigator.geolocation) {
-        display.innerHTML = `<p>Locating...</p>`;
-        navigator.geolocation.getCurrentPosition(
-            (pos) => fetchWeatherByCoords(pos.coords.latitude, pos.coords.longitude),
-            () => display.innerHTML = `<p>Location denied.</p>`
-        );
-    }
-});
-
-async function fetchWeather(city) {
-    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${API_KEY}`;
-    await callApi(url);
-}
-
-async function fetchWeatherByCoords(lat, lon) {
-    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
-    await callApi(url);
-}
-
-async function callApi(url) {
-    display.innerHTML = `<p>Loading...</p>`;
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        if (data.cod === "200") {
-            renderFullWeather(data);
-            localStorage.setItem('lastWeatherCity', data.city.name);
-        } else {
-            display.innerHTML = `<p>Error: ${data.message}</p>`;
-        }
-    } catch (error) {
-        display.innerHTML = `<p>Connection error.</p>`;
-    }
-}
-
 function renderFullWeather(data) {
     const current = data.list[0];
-    // Filter to get one forecast per day (the one closest to 12:00 PM)
-    const dailyForecast = data.list.filter(item => item.dt_txt.includes("12:00:00"));
+    
+    // Group 3-hour forecasts by date to find daily Min/Max
+    const dailyData = {};
+
+    data.list.forEach(item => {
+        const date = item.dt_txt.split(' ')[0]; // Get YYYY-MM-DD
+        if (!dailyData[date]) {
+            dailyData[date] = {
+                min: item.main.temp_min,
+                max: item.main.temp_max,
+                icon: item.weather[0].icon,
+                dayName: new Date(item.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' })
+            };
+        } else {
+            // Update the day's min and max if a more extreme value is found
+            if (item.main.temp_min < dailyData[date].min) dailyData[date].min = item.main.temp_min;
+            if (item.main.temp_max > dailyData[date].max) dailyData[date].max = item.main.temp_max;
+        }
+    });
+
+    // Convert object to array and skip the first day (which is "today")
+    const forecastArray = Object.values(dailyData).slice(1, 6);
 
     let forecastHtml = '';
-    dailyForecast.forEach(day => {
-        const date = new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' });
+    forecastArray.forEach(day => {
         forecastHtml += `
             <div class="forecast-item">
-                <p>${date}</p>
-                <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}.png">
-                <p><strong>${Math.round(day.main.temp)}°C</strong></p>
+                <p style="font-weight: bold; margin-bottom: 2px;">${day.dayName}</p>
+                <img src="https://openweathermap.org/img/wn/${day.icon}.png" alt="icon">
+                <p style="color: #dc3545; margin: 2px 0;">${Math.round(day.max)}°</p>
+                <p style="color: #007bff; margin: 2px 0;">${Math.round(day.min)}°</p>
             </div>
         `;
     });
 
     display.innerHTML = `
         <div class="fade-in">
-            <h2>${data.city.name}</h2>
-            <img src="https://openweathermap.org/img/wn/${current.weather[0].icon}@2x.png">
-            <h3>${Math.round(current.main.temp)}°C</h3>
-            <p>High: ${Math.round(current.main.temp_max)}°C | Low: ${Math.round(current.main.temp_min)}°C</p>
-            <p style="text-transform: capitalize;">${current.weather[0].description}</p>
+            <h2 style="margin-bottom: 0;">${data.city.name}</h2>
+            <p style="font-size: 0.8rem; color: #888; margin-top: 4px;">Current Weather</p>
             
+            <img src="https://openweathermap.org/img/wn/${current.weather[0].icon}@2x.png">
+            <h3 style="font-size: 3rem; margin: 5px 0;">${Math.round(current.main.temp)}°C</h3>
+            <p style="text-transform: capitalize; font-weight: 500;">${current.weather[0].description}</p>
+            
+            <div style="margin-top: 10px; font-size: 0.9rem;">
+                <span style="color: #dc3545;">H: ${Math.round(current.main.temp_max)}°</span> 
+                <span style="margin: 0 5px;">/</span>
+                <span style="color: #007bff;">L: ${Math.round(current.main.temp_min)}°</span>
+            </div>
+
             <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
             
+            <p style="text-align: left; font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">5-Day Forecast</p>
             <div class="forecast-container">
                 ${forecastHtml}
             </div>
