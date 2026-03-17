@@ -1,25 +1,23 @@
 .forecast-container {
     display: flex;
     justify-content: space-between;
-    overflow-x: auto;
-    padding-bottom: 10px;
-    gap: 10px;
+    gap: 8px;
+    margin-top: 10px;
 }
 
 .forecast-item {
     flex: 1;
-    min-width: 60px;
-    background: #f8f9fa;
-    padding: 10px;
-    border-radius: 10px;
-    font-size: 0.8rem;
+    background: #fcfcfc;
+    border: 1px solid #f0f0f0;
+    padding: 8px 4px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 0.75rem;
 }
 
 .forecast-item img {
-    width: 30px;
-    height: 30px;
-}
-
-.forecast-item p {
-    margin: 5px 0;
+    width: 35px;
+    height: 35px;
+    display: block;
+    margin: 0 auto;
 }
