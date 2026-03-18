@@ -1,4 +1,4 @@
-const CACHE_NAME = 'weather-v3';
+const CACHE_NAME = 'dukecast-v2';
 const ASSETS = [
     './',
     './index.html',
@@ -13,8 +13,18 @@ self.addEventListener('install', (e) => {
     );
 });
 
+self.addEventListener('activate', (e) => {
+    e.waitUntil(
+        caches.keys().then(keys => {
+            return Promise.all(keys.map(key => {
+                if (key !== CACHE_NAME) return caches.delete(key);
+            }));
+        })
+    );
+});
+
 self.addEventListener('fetch', (e) => {
     e.respondWith(
-        caches.match(e.request).then(response => response || fetch(e.request))
+        caches.match(e.request).then(res => res || fetch(e.request))
     );
 });
