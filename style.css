@@ -1,48 +1,101 @@
-/* Updated Search Box for Mobile Portrait */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Poppins', sans-serif;
+    /* Darker, high-contrast gradient */
+    background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    color: #2d3436;
+}
+
+.app-container {
+    background: rgba(255, 255, 255, 0.98); /* Increased opacity for better contrast */
+    padding: 1.5rem;
+    border-radius: 25px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 400px; /* Locked width for mobile consistency */
+    text-align: center;
+    overflow: hidden; /* Keeps everything inside the panel */
+}
+
+h1 {
+    font-size: 1.6rem;
+    margin-bottom: 1.2rem;
+    color: #1e3c72;
+    text-transform: uppercase;
+}
+
+/* THE FIX: Locked Search Group */
 .search-box {
     display: flex;
-    flex-wrap: nowrap; /* Keep them on one line */
-    gap: 8px;
-    margin-bottom: 30px;
-    width: 100%;
+    align-items: center;
+    background: #f1f2f6;
+    border-radius: 15px;
+    padding: 5px;
+    gap: 5px;
+    margin-bottom: 20px;
 }
 
 input {
-    flex: 1; /* Grows to take up available space */
-    min-width: 0; /* Critical: allows input to shrink below its default size */
-    padding: 12px 15px;
-    border: 2px solid #dfe6e9;
-    border-radius: 15px;
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 10px;
+    font-size: 16px;
     outline: none;
-    font-size: 16px; /* Prevents iOS auto-zoom on focus */
-    transition: all 0.2s;
+    width: 100%; /* Ensures it fills the group but doesn't push out */
 }
 
-button {
-    padding: 12px 15px;
+.icon-btn {
     background: #1e3c72;
     color: white;
     border: none;
-    border-radius: 15px;
+    border-radius: 12px;
+    padding: 10px 15px;
     cursor: pointer;
-    font-weight: 600;
-    flex-shrink: 0; /* Prevents buttons from squishing */
+    flex-shrink: 0;
 }
 
 #locationBtn {
-    background: #f1f2f6;
+    background: #dfe6e9;
     color: #1e3c72;
-    padding: 12px;
-    min-width: 45px;
+    font-size: 1.1rem;
+    padding: 10px;
 }
 
-/* Extra tweak for very small screens (under 360px) */
-@media (max-width: 360px) {
-    .search-box {
-        gap: 5px;
-    }
-    button {
-        padding: 12px 10px;
-        font-size: 0.9rem;
-    }
+/* THE FIX: Icon Visibility */
+.weather-card img {
+    width: 120px;
+    filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.2)); /* Makes white clouds stand out */
+    margin: -10px 0;
 }
+
+.weather-card h3 { font-size: 4.5rem; font-weight: 300; margin: 5px 0; }
+
+.temp-range {
+    display: inline-flex;
+    gap: 15px;
+    background: #f8f9fa;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.forecast-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    gap: 5px;
+}
+
+.forecast-item { flex: 1; }
+.forecast-item img { width: 40px; filter: none; } /* Smaller icons don't need the heavy shadow */
+.forecast-item p { font-size: 0.75rem; }
