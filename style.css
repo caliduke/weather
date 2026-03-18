@@ -1,106 +1,48 @@
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 15px;
-    color: #2d3436;
-}
-
-.app-container {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    padding: 2rem;
-    border-radius: 35px;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-    width: 100%;
-    max-width: 450px; 
-    text-align: center;
-    transition: all 0.3s ease;
-}
-
-@media (min-width: 768px) {
-    .app-container {
-        max-width: 600px;
-        padding: 3rem;
-    }
-}
-
-h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    color: #1e3c72;
-    letter-spacing: -1.5px;
-    text-transform: uppercase;
-}
-
+/* Updated Search Box for Mobile Portrait */
 .search-box {
     display: flex;
-    gap: 10px;
+    flex-wrap: nowrap; /* Keep them on one line */
+    gap: 8px;
     margin-bottom: 30px;
+    width: 100%;
 }
 
 input {
-    flex: 1;
-    padding: 14px 20px;
+    flex: 1; /* Grows to take up available space */
+    min-width: 0; /* Critical: allows input to shrink below its default size */
+    padding: 12px 15px;
     border: 2px solid #dfe6e9;
-    border-radius: 18px;
+    border-radius: 15px;
     outline: none;
-    font-size: 1rem;
+    font-size: 16px; /* Prevents iOS auto-zoom on focus */
     transition: all 0.2s;
 }
 
-input:focus { border-color: #1e3c72; box-shadow: 0 0 10px rgba(30, 60, 114, 0.1); }
-
 button {
-    padding: 14px;
+    padding: 12px 15px;
     background: #1e3c72;
     color: white;
     border: none;
-    border-radius: 18px;
+    border-radius: 15px;
     cursor: pointer;
     font-weight: 600;
-    transition: transform 0.2s;
+    flex-shrink: 0; /* Prevents buttons from squishing */
 }
 
-button:active { transform: scale(0.92); }
-
-#locationBtn { background: #f1f2f6; color: #1e3c72; font-size: 1.2rem; }
-
-.weather-card h3 { font-size: 5rem; line-height: 1; margin: 15px 0; font-weight: 300; }
-
-.temp-range {
-    display: inline-flex;
-    gap: 20px;
+#locationBtn {
     background: #f1f2f6;
-    padding: 10px 25px;
-    border-radius: 25px;
-    font-weight: 600;
-    margin-bottom: 20px;
+    color: #1e3c72;
+    padding: 12px;
+    min-width: 45px;
 }
 
-.forecast-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 30px;
-    padding-top: 25px;
-    border-top: 1px solid #dfe6e9;
-    overflow-x: auto;
-    gap: 12px;
-}
-
-.forecast-item { min-width: 65px; text-align: center; }
-.forecast-item p { font-size: 0.85rem; margin-bottom: 2px; }
-.forecast-item img { width: 45px; margin: 4px 0; }
-
-.fade-in { animation: fadeIn 0.8s ease-out; }
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+/* Extra tweak for very small screens (under 360px) */
+@media (max-width: 360px) {
+    .search-box {
+        gap: 5px;
+    }
+    button {
+        padding: 12px 10px;
+        font-size: 0.9rem;
+    }
 }
