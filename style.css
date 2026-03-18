@@ -2,86 +2,90 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    /* Darker, high-contrast gradient */
+    /* Deep night-sky background */
     background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 10px;
-    color: #2d3436;
+    color: #ffffff; /* White text for the whole app */
 }
 
 .app-container {
-    background: rgba(255, 255, 255, 0.98); /* Increased opacity for better contrast */
-    padding: 1.5rem;
-    border-radius: 25px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    /* THE FIX: Dark Slate Panel */
+    background: rgba(47, 53, 66, 0.95); 
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 2rem;
+    border-radius: 30px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
     width: 100%;
-    max-width: 400px; /* Locked width for mobile consistency */
+    max-width: 420px;
     text-align: center;
-    overflow: hidden; /* Keeps everything inside the panel */
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 h1 {
-    font-size: 1.6rem;
-    margin-bottom: 1.2rem;
-    color: #1e3c72;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #ffffff;
+    letter-spacing: 2px;
     text-transform: uppercase;
 }
 
-/* THE FIX: Locked Search Group */
+/* Integrated Search Group */
 .search-box {
     display: flex;
     align-items: center;
-    background: #f1f2f6;
-    border-radius: 15px;
-    padding: 5px;
-    gap: 5px;
-    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.1); /* Subtle transparent white */
+    border-radius: 18px;
+    padding: 6px;
+    gap: 8px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 input {
     flex: 1;
     border: none;
     background: transparent;
-    padding: 10px;
+    padding: 10px 15px;
     font-size: 16px;
     outline: none;
-    width: 100%; /* Ensures it fills the group but doesn't push out */
+    color: white; /* White text typing */
+    width: 100%;
 }
+
+input::placeholder { color: rgba(255, 255, 255, 0.5); }
 
 .icon-btn {
-    background: #1e3c72;
+    background: #1e90ff; /* Bright blue for action */
     color: white;
     border: none;
-    border-radius: 12px;
-    padding: 10px 15px;
+    border-radius: 14px;
+    padding: 10px 18px;
     cursor: pointer;
-    flex-shrink: 0;
+    font-weight: 600;
+    transition: all 0.2s;
 }
+
+.icon-btn:active { transform: scale(0.95); }
 
 #locationBtn {
-    background: #dfe6e9;
-    color: #1e3c72;
-    font-size: 1.1rem;
-    padding: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
 }
 
-/* THE FIX: Icon Visibility */
-.weather-card img {
-    width: 120px;
-    filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.2)); /* Makes white clouds stand out */
-    margin: -10px 0;
-}
-
-.weather-card h3 { font-size: 4.5rem; font-weight: 300; margin: 5px 0; }
+/* Weather UI Contrast Fix */
+.weather-card h2 { font-size: 1.6rem; color: #ffffff; }
+.weather-card h3 { font-size: 5rem; font-weight: 200; margin: 10px 0; }
 
 .temp-range {
     display: inline-flex;
     gap: 15px;
-    background: #f8f9fa;
-    padding: 8px 20px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 8px 25px;
     border-radius: 20px;
     font-weight: 600;
     margin-bottom: 20px;
@@ -90,12 +94,17 @@ input {
 .forecast-container {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #eee;
-    gap: 5px;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 10px;
 }
 
-.forecast-item { flex: 1; }
-.forecast-item img { width: 40px; filter: none; } /* Smaller icons don't need the heavy shadow */
-.forecast-item p { font-size: 0.75rem; }
+.forecast-item p { font-size: 0.8rem; color: rgba(255, 255, 255, 0.8); }
+.forecast-item img { width: 45px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
+
+.fade-in { animation: fadeIn 0.8s ease-out; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
